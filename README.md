@@ -1,5 +1,4 @@
 # Zoomy
-==========
 
 ![](https://i.imgur.com/oRc6dRN.png)
 
