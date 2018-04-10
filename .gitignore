@@ -1,2 +1,6 @@
 # Bad babby
 *.so *.exe *.dll
+
+# Art assets related to the listing in godot's asset lib
+icon.png
+icon.ai
