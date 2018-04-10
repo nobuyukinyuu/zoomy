@@ -1,5 +1,5 @@
 tool
-extends Container
+extends HBoxContainer
 
 const DEBUG_VERBOSE = false
 
@@ -11,36 +11,22 @@ onready var editor_node = get_node("/root/EditorNode")
 onready var editor_canvas = find_viewport(editor_node,0, "CanvasItemEditor")
 onready var viewport  = find_viewport(editor_canvas,0,"Viewport")
 
+var font 
 
-func _ready():
-#	$icon_viewport_zoom.position.x = self.rect_size.x - 16
-	pass
+var lastpos
+var lastzoom
+
 	
 #Used to ready the addon once the editor interface has been acquired from host
-func activate():  
-	_activated = true 
+func activate():
+	_activated = true
 	#listKids(viewport,0)
+#	font = editorb.get_base_control().theme.default_font
+	font = self.get_font("font")
+
 	refresh(self)
 	set_physics_process(true)
 
-#Done every frame. I wonder if there's a way to only do it on the proper signals?
-func _physics_process(delta):
-	
-	if _activated:
-		#Don't remember if this stuff is necessary.  Might be here for future use
-		#if EditorInterface can expose the 2d viewport without nasty hacks
-		var root=editorb.get_base_control()
-		var r = root.get_global_rect()
-
-		if viewport !=null:
-			var zoom = viewport.get_final_transform().get_scale().x * 100
-			var mpos = viewport.get_mouse_position()
-			
-			$TextureRect2.rect_position.x = $TextureRect.rect_position.x - $TextureRect2.rect_size.x - 32
-			
-			$TextureRect/Z.text = "%*.*f%%" % [7,1,zoom]
-			$TextureRect2/pos.text = "(%.f, %.f)" % [mpos.x, mpos.y]
-			
 
 #in case something goes horribly wrong!
 func refresh(from_whom):
@@ -50,6 +36,44 @@ func refresh(from_whom):
 	editor_canvas = find_viewport($'/root/EditorNode', 0 ,"CanvasItemEditor")
 	viewport = find_viewport(editor_canvas, 0, "Viewport", DEBUG_VERBOSE) # Returns null if not found
 
+
+#Done every frame. I wonder if there's a way to only do it on the proper signals?
+func _physics_process(delta):
+	
+	if _activated:
+		#Don't remember if this is necessary.  Might be here for future use
+		#if EditorInterface can expose the 2d viewport without nasty hacks
+#		var root=editorb.get_base_control()
+
+		if viewport !=null:
+			var zoom = viewport.get_final_transform().get_scale().x * 100
+			var mpos = viewport.get_mouse_position()
+			
+			
+			$ZSnap/Z.text = "%1.1f%%" % zoom
+			$posSnap/pos.text = "(%.f, %.f)" % [mpos.x, mpos.y]
+			
+			#Only redraw when you gotta.
+			#the position string changes a LOT so we need to make sure
+			#that it only resizes when it needs more room to reduce
+			#the appearance of the string 'jumping around' a lot
+			if not lastpos == mpos:
+				var posWidth = font.get_string_size("(,)").x 
+				posWidth = (max(6,len($posSnap/pos.text )-3)) * 9 + posWidth -2
+				$posSnap.rect_min_size.x = posWidth
+				$posSnap/pos.rect_size.x = posWidth
+				pass
+				
+			if not lastzoom == zoom:
+				var width = font.get_string_size(".%").x
+				width = (len($ZSnap/Z.text)-2) * 9 + width + 4
+				$ZSnap.rect_min_size.x = width
+				$ZSnap/Z.rect_size.x = width
+				pass
+
+			
+			lastpos = mpos
+			lastzoom = zoom
 
 #FIND THE EDITOR VIEWPORT
 func find_viewport(node, recursive_level, className, debugPrint=false):
