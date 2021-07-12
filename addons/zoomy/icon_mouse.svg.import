@@ -3,20 +3,21 @@
 importer="texture"
 type="StreamTexture"
 path="res://.import/icon_mouse.svg-65fdce0bc70431b4c9e7ae2a858f7b29.stex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://addons/zoomy/icon_mouse.svg"
-source_md5="d54b712f7149c512182ba93496c20ed5"
-
 dest_files=[ "res://.import/icon_mouse.svg-65fdce0bc70431b4c9e7ae2a858f7b29.stex" ]
-dest_md5="f2abf3f7652bebdc653a2340746c83e1"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
@@ -26,6 +27,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=true
