@@ -21,7 +21,7 @@ var pad_amt = 1
 var zLevels = [0.25, 0.5, 1.0, 2.0, 3.0, 4.0,
 			6.0, 8.0, 12.0, 16.0
 			]
-var padLevels = [0,0,0,1,1,1,2,2,2,3]
+var padLevels = [0,0,0,0,1,1,2,2,2,3]
 
 #Used to ready the addon once the editor interface has been acquired from host
 func activate():
